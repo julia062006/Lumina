@@ -1,0 +1,54 @@
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 11px;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition-property: all;
+  transition-duration: 300ms;
+  transition-timing-function: ease;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+
+.btn svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.btn-primario {
+  color: #ffffff;
+  background-color: #7573A8;
+}
+
+.btn-secundario {
+  color: #7573A8;
+  background-color: transparent;
+  border: 1.5px solid #7573A8;
+  box-shadow: none;
+}
+
+.btn-card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;          
+  border-radius: 0.75rem;
+  font-size: 0.875rem;            
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #7573A8;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}

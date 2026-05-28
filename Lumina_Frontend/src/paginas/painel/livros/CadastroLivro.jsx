@@ -1,0 +1,180 @@
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { criarLivro, getAutores, getCategorias } from "../../../services/api";
+import { BotaoPrimario, BotaoSecundario } from "../../../componentes/Botao";
+import Input from "../../../componentes/Input";
+import Formulario from "../../../componentes/Formulario";
+import { validacoesTexto, validacoesNumero, validacoesSelect, MENSAGENS } from "../../../utilitarios/validacoes";
+import { criarFormData, alertaSucesso, alertaErro } from "../../../utilitarios/formulario";
+
+function CadastrarLivro() {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const navigate = useNavigate();
+
+    const [capa, setCapa] = useState(null);
+    const [pdf, setPdf] = useState(null);
+    const [autores, setAutores] = useState([]);
+    const [categorias, setCategorias] = useState([]);
+
+    useEffect(() => {
+        async function carregarDados() {
+            const [respostaAutores, respostaCategorias] = await Promise.all([
+                getAutores(),
+                getCategorias(),
+            ]);
+
+            if (respostaAutores.ok) setAutores(respostaAutores.data);
+            if (respostaCategorias.ok) setCategorias(respostaCategorias.data);
+        }
+
+        carregarDados();
+    }, []);
+
+    async function cadastrar(dados) {
+        try {
+            const formData = criarFormData({
+                titulo: dados.titulo,
+                descricao: dados.descricao,
+                preco: dados.preco.replace(/[R$\s.]/g, "").replace(",", "."),
+                id_autor: dados.id_autor,
+                id_categoria: dados.id_categoria,
+                destaque: dados.destaque,
+                capa_imagem: capa,
+                arquivo_pdf: pdf,
+            });
+
+            const resposta = await criarLivro(formData);
+
+            if (!resposta.ok) {
+                await alertaErro(resposta.data.mensagem);
+                return;
+            }
+
+            await alertaSucesso(MENSAGENS.CADASTRO_SUCESSO("Livro"));
+            reset();
+            setCapa(null);
+            setPdf(null);
+
+        } catch (erro) {
+            console.error(MENSAGENS.ERRO_SERVIDOR, erro);
+            await alertaErro(MENSAGENS.ERRO_SERVIDOR);
+        }
+    }
+
+    return (
+        <div className="bg-blue-50">
+            <Formulario titulo="Cadastrar Livro" onSubmit={handleSubmit(cadastrar)}>
+
+                <Input
+                    label="Título"
+                    name="titulo"
+                    placeholder="Digite o título"
+                    register={(name) => register(name, validacoesTexto("O título é obrigatório"))}
+                    error={errors.titulo}
+                />
+
+                <Input
+                    label="Descrição"
+                    name="descricao"
+                    placeholder="Digite a descrição"
+                    register={(name) => register(name, validacoesTexto("A descrição é obrigatória"))}
+                    error={errors.descricao}
+                />
+
+                 <Input
+                    label="Preço"
+                    name="preco"
+                    type="text"
+                    placeholder="Digite o preço"
+                    register={(name) => register(name, validacoesNumero("O preço é obrigatório"))}
+                    error={errors.preco}
+                />
+
+                <div className="mt-4">
+                    <label>Autor</label>
+                    <select
+                        {...register("id_autor", validacoesSelect("Autor é obrigatório"))}
+                        className="block w-full mt-2 border p-2"
+                    >
+                        <option value="">Selecione um autor</option>
+                        {autores.map((autor) => (
+                            <option key={autor.id_autor} value={autor.id_autor}>
+                                {autor.nome}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.id_autor && <p>{errors.id_autor.message}</p>}
+                </div>
+
+                <div className="mt-4">
+                    <label>Categoria</label>
+                    <select
+                        {...register("id_categoria", validacoesSelect("Categoria é obrigatória"))}
+                        className="block w-full mt-2 border p-2"
+                    >
+                        <option value="">Selecione uma categoria</option>
+                        {categorias.map((categoria) => (
+                            <option key={categoria.id_categoria} value={categoria.id_categoria}>
+                                {categoria.nome}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.id_categoria && <p>{errors.id_categoria.message}</p>}
+                </div>
+
+                <div className="mt-4">
+                    <label>Destaque</label>
+                    <select
+                        {...register("destaque", validacoesSelect("Destaque é obrigatório"))}
+                        className="block w-full mt-2 border p-2"
+                    >
+                        <option value="">Selecione</option>
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
+                    </select>
+                    {errors.destaque && <p>{errors.destaque.message}</p>}
+                </div>
+
+                <div className="mt-4">
+                    <label>Capa do Livro</label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setCapa(e.target.files[0])}
+                        className="block mt-2"
+                    />
+                </div>
+
+                {capa && (
+                    <img
+                        src={URL.createObjectURL(capa)}
+                        alt="preview"
+                        width="150"
+                        className="mt-4"
+                    />
+                )}
+
+                <div className="mt-4">
+                    <label>Arquivo PDF</label>
+                    <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(e) => setPdf(e.target.files[0])}
+                        className="block mt-2"
+                    />
+                </div>
+
+                <div className="flex gap-4 mt-4">
+                    <BotaoPrimario type="submit">Cadastrar</BotaoPrimario>
+                    <BotaoSecundario type="button" onClick={() => navigate("/painel/livros")}>
+                        Voltar
+                    </BotaoSecundario>
+                </div>
+
+            </Formulario>
+        </div>
+    );
+}
+
+export default CadastrarLivro;

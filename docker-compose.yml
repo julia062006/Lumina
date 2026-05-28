@@ -1,0 +1,30 @@
+services:
+  database:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: lumina
+      MYSQL_USER: lumina_user
+      MYSQL_PASSWORD: lumina_password
+    ports:
+      - "3306:3306"
+      #  volumes:
+      #   - mysql-data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./Lumina_Backend
+      dockerfile: Dockerfile
+    container_name: backend_service
+    environment: 
+       DB_HOST: database
+       DB_PORT: 3306
+       DB_NAME: lumina
+       DB_USER: lumina_user
+       DB_PASS: lumina_password
+    expose:
+      - 3000
+    depends_on:
+      - database
