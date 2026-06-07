@@ -10,7 +10,8 @@
     "build": "tsc",
     "start": "node dist/src/server.js",
     "db:migrate": "npx sequelize db:migrate",
-    "db:migrate:undo": "npx sequelize db:migrate:undo"
+    "db:migrate:undo": "npx sequelize db:migrate:undo",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
