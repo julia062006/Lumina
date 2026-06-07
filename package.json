@@ -8,6 +8,6 @@
     "prepare": "husky",
     "test:backend": "cd Lumina_Backend && npm test",
     "test": "npm run test:backend",
-    "typecheck": "cd backend && npm run typecheck"
+    "typecheck": "cd Lumina_Backend && npm run typecheck"
   }
 }
