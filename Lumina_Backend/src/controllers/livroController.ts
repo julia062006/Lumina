@@ -22,7 +22,9 @@ class LivroController {
                 where,
                 include: [
                     { association: "autor" },
-                    { association: "categoria" }
+                    { association: "categoria" },
+                    { association: "editora" },
+                    { association: "colecao" }
                 ]
             });
 
@@ -39,7 +41,9 @@ class LivroController {
             const livro = await Livro.findByPk(Number(id), {
                 include: [
                     { association: "autor" },
-                    { association: "categoria" }
+                    { association: "categoria" },
+                    { association: "editora" },
+                    { association: "colecao" }
                 ]
             });
             if (!livro) {
@@ -56,7 +60,7 @@ class LivroController {
     static async create(req: Request, res: Response) {
         try {
 
-            const { id_autor, titulo, descricao, preco, id_categoria, destaque } = req.body;
+            const { id_autor, titulo, descricao, preco, id_categoria, destaque, id_editora, id_colecao } = req.body;
 
             const arquivos = req.files as {
                 [fieldname: string]: Express.Multer.File[];
@@ -77,9 +81,11 @@ class LivroController {
                 descricao,
                 preco: parseFloat(String(preco).replace(",", ".")),
                 id_categoria,
+                id_editora,
+                id_colecao: id_colecao || null,
                 capa_imagem: capa.filename,
                 arquivo_pdf: pdf.filename,
-                destaque: destaque === "true"
+                destaque: destaque === "true",
             });
 
             return res.status(201).json(livro);
@@ -96,7 +102,7 @@ class LivroController {
         }
         try {
             const { id } = req.params;
-            const { id_autor, titulo, descricao, preco, id_categoria, destaque } = req.body;
+            const { id_autor, titulo, descricao, preco, id_categoria, destaque, id_editora, id_colecao } = req.body;
             const livro = await Livro.findByPk(Number(id));
 
             if (!livro) {
@@ -116,6 +122,8 @@ class LivroController {
                 capa_imagem,
                 arquivo_pdf,
                 id_categoria,
+                id_editora,
+                id_colecao: id_colecao || null,
                 destaque: destaque === "true"
             });
 
