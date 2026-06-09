@@ -1,4 +1,4 @@
-const API = "http://localhost:3000";
+const API = "/api";
 
 async function tratarResposta(resposta) {
     let data;

@@ -60,7 +60,8 @@ services:
       dockerfile: Dockerfile
     container_name: frontend_service
     expose:
-      - "3001"
+      - "80"
+      - "443"
     depends_on:
       - database
       - backend
