@@ -27,3 +27,6 @@ yarn-error.log*
 .pnp.js
 
 certs/
+
+playwright-report/
+test-results/
