@@ -14,6 +14,11 @@ services:
       - mysql-data:/var/lib/mysql
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   nginx:
     image: nginx:latest
@@ -44,7 +49,8 @@ services:
     expose:
       - 3000
     depends_on:
-      - database
+       database:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -54,7 +60,8 @@ services:
       dockerfile: Dockerfile
     container_name: frontend_service
     expose:
-      - "3001"
+      - "80"
+      - "443"
     depends_on:
       - database
       - backend

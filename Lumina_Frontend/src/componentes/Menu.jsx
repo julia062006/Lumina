@@ -21,10 +21,10 @@ export default function Menu() {
             </div>
 
             <nav className="absolute left-1/2 -translate-x-1/2 flex items-center gap-10">
-                <a href="/inicio" className={linkClass}>Inicío</a>
-                <a href="/biblioteca" className={linkClass}>Biblioteca</a>
-                <a href="/categorias" className={linkClass}>Categorias</a>
-                <a href="/autores" className={linkClass}>Autores</a>
+                <Link to="/inicio" className={linkClass}>Início</Link>
+                <Link to="/biblioteca" className={linkClass}>Biblioteca</Link>
+                <Link to="/categorias" className={linkClass}>Categorias</Link>
+                <Link to="/autores" className={linkClass}>Autores</Link>
 
             </nav>
             <div className="flex items-center gap-4 pr-10">
