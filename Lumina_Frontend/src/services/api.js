@@ -188,3 +188,68 @@ export async function deletarLivro(id) {
 
     return tratarResposta(resposta);
 }
+
+
+export async function getEditoras() {
+    const resposta = await fetch(API + "/editoras");
+    return tratarResposta(resposta);
+}
+
+export async function criarEditora(dados) {
+    const resposta = await fetch(API + "/editoras", {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify(dados)
+    });
+    return tratarResposta(resposta);
+}
+
+export async function editarEditora(id, dados) {
+    const resposta = await fetch(API + "/editoras/" + id, {
+        method: "PUT",
+        headers: getHeaders(),
+        body: JSON.stringify(dados)
+    });
+    return tratarResposta(resposta);
+}
+
+export async function deletarEditora(id) {
+    const resposta = await fetch(API + "/editoras/" + id, {
+        method: "DELETE",
+        headers: getHeaders()
+    });
+    return tratarResposta(resposta);
+}
+
+
+
+export async function getColecoes() {
+    const resposta = await fetch(API + "/colecoes");
+    return tratarResposta(resposta);
+}
+
+export async function criarColecao(dados) {
+    const resposta = await fetch(API + "/colecoes", {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify(dados)
+    });
+    return tratarResposta(resposta);
+}
+
+export async function editarColecao(id, dados) {
+    const resposta = await fetch(API + "/colecoes/" + id, {
+        method: "PUT",
+        headers: getHeaders(),
+        body: JSON.stringify(dados)
+    });
+    return tratarResposta(resposta);
+}
+
+export async function deletarColecao(id) {
+    const resposta = await fetch(API + "/colecoes/" + id, {
+        method: "DELETE",
+        headers: getHeaders()
+    });
+    return tratarResposta(resposta);
+}

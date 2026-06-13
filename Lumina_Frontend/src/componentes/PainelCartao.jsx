@@ -24,6 +24,19 @@ function PainelCartao({ titulo, descricao, icone: Icone, cor, onClick }) {
             hoverShadow: "hover:shadow-pink-400/40",
             hoverBorder: "hover:border-pink-300",
         },
+        orange: {
+            bg: "bg-orange-100",
+            text: "text-orange-600",
+            hoverShadow: "hover:shadow-orange-400/40",
+            hoverBorder: "hover:border-orange-300",
+        },
+
+        teal: {
+            bg: "bg-teal-100",
+            text: "text-teal-600",
+            hoverShadow: "hover:shadow-teal-400/40",
+            hoverBorder: "hover:border-teal-300",
+        },
     };
 
     const estilo = CORES[cor];
