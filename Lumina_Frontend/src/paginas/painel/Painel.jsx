@@ -8,6 +8,8 @@ const SECOES = [
     { titulo: "Autores", descricao: "Gerenciar autores cadastrados", rota: "/painel/autores", icone: User, cor: "green" },
     { titulo: "Categorias", descricao: "Gerenciar categorias", rota: "/painel/categorias", icone: Tag, cor: "purple" },
     { titulo: "Usuários", descricao: "Visualizar usuários cadastrados", rota: "/painel/usuarios", icone: Users, cor: "pink" },
+    { titulo: "Editoras", descricao: "Gerenciar editoras cadastradas", rota: "/painel/editoras", icone: Book, cor: "orange" },
+    { titulo: "Coleção", descricao: "Gerenciar coleções de livros", rota: "/painel/colecao", icone: Book, cor: "teal" },
 ];
 
 function Painel() {
