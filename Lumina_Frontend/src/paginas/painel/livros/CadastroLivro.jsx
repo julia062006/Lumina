@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { criarLivro, getAutores, getCategorias } from "../../../services/api";
+import { criarLivro, getAutores, getCategorias, getEditoras } from "../../../services/api";
 import { BotaoPrimario, BotaoSecundario } from "../../../componentes/Botao";
 import Input from "../../../componentes/Input";
 import Formulario from "../../../componentes/Formulario";
 import { validacoesTexto, validacoesNumero, validacoesSelect, MENSAGENS } from "../../../utilitarios/validacoes";
 import { criarFormData, alertaSucesso, alertaErro } from "../../../utilitarios/formulario";
+
 
 function CadastrarLivro() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -16,16 +17,19 @@ function CadastrarLivro() {
     const [pdf, setPdf] = useState(null);
     const [autores, setAutores] = useState([]);
     const [categorias, setCategorias] = useState([]);
+    const [editoras, setEditoras] = useState([]);
 
     useEffect(() => {
         async function carregarDados() {
-            const [respostaAutores, respostaCategorias] = await Promise.all([
+            const [respostaAutores, respostaCategorias, respostaEditoras] = await Promise.all([
                 getAutores(),
                 getCategorias(),
+                getEditoras(),
             ]);
 
             if (respostaAutores.ok) setAutores(respostaAutores.data);
             if (respostaCategorias.ok) setCategorias(respostaCategorias.data);
+            if (respostaEditoras.ok) setEditoras(respostaEditoras.data);
         }
 
         carregarDados();
@@ -39,6 +43,7 @@ function CadastrarLivro() {
                 preco: dados.preco.replace(/[R$\s.]/g, "").replace(",", "."),
                 id_autor: dados.id_autor,
                 id_categoria: dados.id_categoria,
+                id_editora: dados.id_editora,
                 destaque: dados.destaque,
                 capa_imagem: capa,
                 arquivo_pdf: pdf,
@@ -122,6 +127,22 @@ function CadastrarLivro() {
                     </select>
                     {errors.id_categoria && <p>{errors.id_categoria.message}</p>}
                 </div>
+
+                <div className="mt-4">
+    <label>Editora</label>
+    <select
+        {...register("id_editora", validacoesSelect("Editora é obrigatória"))}
+        className="block w-full mt-2 border p-2"
+    >
+        <option value="">Selecione uma editora</option>
+        {editoras.map((editora) => (
+            <option key={editora.id_editora} value={editora.id_editora}>
+                {editora.nome}
+            </option>
+        ))}
+    </select>
+    {errors.id_editora && <p>{errors.id_editora.message}</p>}
+</div>
 
                 <div className="mt-4">
                     <label>Destaque</label>
