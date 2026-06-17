@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { criarLivro, getAutores, getCategorias, getEditoras } from "../../../services/api";
+import { criarLivro, getAutores, getCategorias, getEditoras, getColecoes } from "../../../services/api";
 import { BotaoPrimario, BotaoSecundario } from "../../../componentes/Botao";
 import Input from "../../../componentes/Input";
 import Formulario from "../../../componentes/Formulario";
@@ -18,18 +18,21 @@ function CadastrarLivro() {
     const [autores, setAutores] = useState([]);
     const [categorias, setCategorias] = useState([]);
     const [editoras, setEditoras] = useState([]);
+    const [colecoes, setColecoes] = useState([]);
 
     useEffect(() => {
         async function carregarDados() {
-            const [respostaAutores, respostaCategorias, respostaEditoras] = await Promise.all([
+            const [respostaAutores, respostaCategorias, respostaEditoras, respostaColecoes] = await Promise.all([
                 getAutores(),
                 getCategorias(),
                 getEditoras(),
+                getColecoes(),
             ]);
 
             if (respostaAutores.ok) setAutores(respostaAutores.data);
             if (respostaCategorias.ok) setCategorias(respostaCategorias.data);
             if (respostaEditoras.ok) setEditoras(respostaEditoras.data);
+            if (respostaColecoes.ok) setColecoes(respostaColecoes.data);
         }
 
         carregarDados();
@@ -44,6 +47,7 @@ function CadastrarLivro() {
                 id_autor: dados.id_autor,
                 id_categoria: dados.id_categoria,
                 id_editora: dados.id_editora,
+                id_colecao: dados.id_colecao || null,
                 destaque: dados.destaque,
                 capa_imagem: capa,
                 arquivo_pdf: pdf,
@@ -87,7 +91,7 @@ function CadastrarLivro() {
                     error={errors.descricao}
                 />
 
-                 <Input
+                <Input
                     label="Preço"
                     name="preco"
                     type="text"
@@ -129,20 +133,35 @@ function CadastrarLivro() {
                 </div>
 
                 <div className="mt-4">
-    <label>Editora</label>
-    <select
-        {...register("id_editora", validacoesSelect("Editora é obrigatória"))}
-        className="block w-full mt-2 border p-2"
-    >
-        <option value="">Selecione uma editora</option>
-        {editoras.map((editora) => (
-            <option key={editora.id_editora} value={editora.id_editora}>
-                {editora.nome}
-            </option>
-        ))}
-    </select>
-    {errors.id_editora && <p>{errors.id_editora.message}</p>}
-</div>
+                    <label>Editora</label>
+                    <select
+                        {...register("id_editora", validacoesSelect("Editora é obrigatória"))}
+                        className="block w-full mt-2 border p-2"
+                    >
+                        <option value="">Selecione uma editora</option>
+                        {editoras.map((editora) => (
+                            <option key={editora.id_editora} value={editora.id_editora}>
+                                {editora.nome}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.id_editora && <p>{errors.id_editora.message}</p>}
+                </div>
+
+                <div className="mt-4">
+                    <label>Coleção</label>
+                    <select
+                        {...register("id_colecao")}
+                        className="block w-full mt-2 border p-2"
+                    >
+                        <option value="">Nenhuma coleção</option>
+                        {colecoes.map((colecao) => (
+                            <option key={colecao.id_colecao} value={colecao.id_colecao}>
+                                {colecao.nome}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                 <div className="mt-4">
                     <label>Destaque</label>
