@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { editarLivro, getAutores, getCategorias } from "../../../services/api";
+import { editarLivro, getAutores, getCategorias, getEditoras } from "../../../services/api";
 import { BotaoPrimario, BotaoSecundario } from "../../../componentes/Botao";
 import Input from "../../../componentes/Input";
 import Formulario from "../../../componentes/Formulario";
 import { validacoesNome, validacoesTexto, MENSAGENS, validacoesSelect, validacoesNumero } from "../../../utilitarios/validacoes";
 import { alertaSucesso, alertaErro } from "../../../utilitarios/formulario";
+
 
 function EditarLivro() {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
@@ -17,27 +18,32 @@ function EditarLivro() {
     const [arquivoPdf, setArquivoPdf] = useState(null);
     const [autores, setAutores] = useState([]);
     const [categorias, setCategorias] = useState([]);
+    const [editoras, setEditoras] = useState([]);
 
     useEffect(() => {
         if (!livro) {
             navigate("/painel/livros");
             return;
         }
-        
+
         async function carregarSelects() {
-            const [resAutores, resCategorias] = await Promise.all([
+            const [resAutores, resCategorias, resEditoras] = await Promise.all([
                 getAutores(),
-                getCategorias()
+                getCategorias(),
+                getEditoras()
             ]);
             setAutores(resAutores.data);
             setCategorias(resCategorias.data);
-            
+            setEditoras(resEditoras.data);
+
             setValue("titulo", livro.titulo);
             setValue("descricao", livro.descricao);
             setValue("preco", Number(livro.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
             setValue("id_autor", livro.id_autor);
             setValue("id_categoria", livro.id_categoria);
+            setValue("id_editora", livro.id_editora);
             setValue("destaque", String(livro.destaque));
+
         }
         carregarSelects();
     }, [livro]);
@@ -50,6 +56,7 @@ function EditarLivro() {
             formData.append("preco", dados.preco.replace(/[R$\s.]/g, "").replace(",", "."));
             formData.append("id_autor", dados.id_autor);
             formData.append("id_categoria", dados.id_categoria);
+            formData.append("id_editora", dados.id_editora);
             formData.append("destaque", dados.destaque);
             if (capaImagem) formData.append("capa_imagem", capaImagem);
             if (arquivoPdf) formData.append("arquivo_pdf", arquivoPdf);
@@ -121,6 +128,18 @@ function EditarLivro() {
                     >
                         {categorias.map((c) => (
                             <option key={c.id_categoria} value={c.id_categoria}>{c.nome}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="mt-4">
+                    <label>Editora</label>
+                    <select
+                        {...register("id_editora", { required: "Editora obrigatória" })}
+                        className="block mt-2 w-full border p-2 rounded"
+                    >
+                        {editoras.map((e) => (
+                            <option key={e.id_editora} value={e.id_editora}>{e.nome}</option>
                         ))}
                     </select>
                 </div>
