@@ -52,6 +52,8 @@ services:
     depends_on:
        database:
         condition: service_healthy
+    volumes:
+      - uploads_data:/app/uploads
     networks:
       - app-network
 
@@ -71,6 +73,7 @@ services:
   
 volumes:
   mysql-data:
-
+  uploads_data:
+  
 networks:
   app-network:

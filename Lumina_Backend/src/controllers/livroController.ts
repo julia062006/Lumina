@@ -8,14 +8,17 @@ import fs from "fs";
 class LivroController {
 
     static async findAll(req: Request, res: Response) {
-
         try {
-            const { categoria } = req.query;
+            const { categoria, colecao } = req.query;
 
             const where: WhereOptions = {};
 
             if (categoria) {
                 where.id_categoria = Number(categoria);
+            }
+
+            if (colecao) {
+                where.id_colecao = Number(colecao);
             }
 
             const livro = await Livro.findAll({

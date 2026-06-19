@@ -3,27 +3,34 @@ import { useSearchParams } from "react-router-dom";
 import LivroCartao from "../componentes/LivroCartao";
 
 function mapearLivroParaCartao(livro) {
-  return {
-    title:       livro.titulo,
-    author:      livro.autor?.nome,
-    image:       `http://localhost:3000/uploads/${livro.capa_imagem}`,
-    description: livro.descricao ?? "",
-    urlPdf:      livro.arquivo_pdf ?? "",
-  };
+    return {
+        title: livro.titulo,
+        author: livro.autor?.nome,
+        editora: livro.editora?.nome,
+        colecao: livro.colecao?.nome,
+        image: `/api/uploads/${livro.capa_imagem}`,
+        description: livro.descricao ?? "",
+        urlPdf: livro.arquivo_pdf ?? "",
+    };
 }
 
 function Biblioteca() {
     const [searchParams] = useSearchParams();
     const categoriaId = searchParams.get("categoria");
+    const colecaoId = searchParams.get("colecao");
 
     const [livros, setLivros] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        let url = "http://localhost:3000/livros";
+        let url = "/api/livros";
+        const params = new URLSearchParams();
 
-        if (categoriaId) {
-            url += `?categoria=${categoriaId}`;
+        if (categoriaId) params.append("categoria", categoriaId);
+        if (colecaoId) params.append("colecao", colecaoId);
+
+        if (params.toString()) {
+            url += `?${params.toString()}`;
         }
 
         fetch(url)
@@ -36,7 +43,7 @@ function Biblioteca() {
                 console.error(err);
                 setLoading(false);
             });
-    }, [categoriaId]);
+    }, [categoriaId, colecaoId]);
 
     return (
         <main>
