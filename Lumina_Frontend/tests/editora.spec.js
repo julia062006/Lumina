@@ -1,21 +1,20 @@
 import { test, expect } from '@playwright/test';
 import { fazerLogin } from './helpers/auth';
 
-test('CRUD completo de categoria', async ({ page }) => {
-
-    const nome = `Categoria ${Date.now()}`;
+test('CRUD completo de editora', async ({ page }) => {
+    const nome = `Editora ${Date.now()}`;
 
     await fazerLogin(page);
 
     await page.goto(
-        'https://lumina.local/painel/cadastroCategoria'
+        'https://lumina.local/painel/cadastroEditora'
     );
 
     await page.fill('[name="nome"]', nome);
 
     await page.fill(
         '[name="descricao"]',
-        'Descrição da categoria'
+        'Descrição teste'
     );
 
     await page.locator(
@@ -23,12 +22,15 @@ test('CRUD completo de categoria', async ({ page }) => {
     ).click();
 
     await expect(
-        page.getByText(/sucesso/i)
+        page.getByText(/cadastrado com sucesso/i)
     ).toBeVisible();
 
+    await page.getByRole('button', {
+        name: 'OK'
+    }).click();
 
     await page.goto(
-        'https://lumina.local/painel/categorias'
+        'https://lumina.local/painel/editoras'
     );
 
     await expect(
@@ -41,31 +43,28 @@ test('CRUD completo de categoria', async ({ page }) => {
         .getByRole('button', { name: /editar/i })
         .click();
 
-    const nomeEditado = `${nome} Editada`;
-
     await page.fill(
         '[name="nome"]',
-        nomeEditado
+        `${nome} Editada`
     );
 
     await page.locator(
         'button[type="submit"]'
     ).click();
 
+    await expect(
+        page.getByText(/atualizada com sucesso/i)
+    ).toBeVisible();
+
     await page.getByRole('button', {
         name: 'OK'
     }).click();
 
-    await page.goto(
-        'https://lumina.local/painel/categorias'
-    );
-
     await expect(
-        page.getByText(nomeEditado)
+        page.getByText(`${nome} Editada`)
     ).toBeVisible();
 
-
-    await page.getByText(nomeEditado)
+    await page.getByText(`${nome} Editada`)
         .locator('..')
         .getByRole('button', { name: /excluir/i })
         .click();
@@ -78,21 +77,24 @@ test('CRUD completo de categoria', async ({ page }) => {
         page.getByText(/removida com sucesso/i)
     ).toBeVisible();
 
+    await page.getByRole('button', { name: 'OK' }).click();
+
     await expect(
-        page.getByText(nomeEditado)
+        page.getByText(`${nome} Editada`)
     ).not.toBeVisible();
+
 });
 
-test('falha ao cadastrar categoria sem nome', async ({ page }) => {
+test('falha ao cadastrar editora sem nome', async ({ page }) => {
     await fazerLogin(page);
 
     await page.goto(
-        'https://lumina.local/painel/cadastroCategoria'
+        'https://lumina.local/painel/cadastroEditora'
     );
 
     await page.fill(
         '[name="descricao"]',
-        'Descrição da categoria'
+        'Descrição teste'
     );
 
     await page.locator(
@@ -103,27 +105,29 @@ test('falha ao cadastrar categoria sem nome', async ({ page }) => {
         page.getByText(/nome.*obrigatório/i)
     ).toBeVisible();
 
-    await expect(page).toHaveURL(/cadastroCategoria/);
+    await expect(page).toHaveURL(/cadastroEditora/);
 });
 
-test('falha ao editar categoria removendo o nome', async ({ page }) => {
-    const nome = `Categoria ${Date.now()}`;
+test('falha ao editar editora removendo o nome', async ({ page }) => {
+    const nome = `Editora ${Date.now()}`;
 
     await fazerLogin(page);
 
     await page.goto(
-        'https://lumina.local/painel/cadastroCategoria'
+        'https://lumina.local/painel/cadastroEditora'
     );
 
     await page.fill('[name="nome"]', nome);
-    await page.fill('[name="descricao"]', 'Descrição da categoria');
+    await page.fill('[name="descricao"]', 'Descrição teste');
     await page.locator('button[type="submit"]').click();
 
     await expect(
-        page.getByText(/sucesso/i)
+        page.getByText(/cadastrado com sucesso/i)
     ).toBeVisible();
 
-    await page.goto('https://lumina.local/painel/categorias');
+    await page.getByRole('button', { name: 'OK' }).click();
+
+    await page.goto('https://lumina.local/painel/editoras');
 
     await page.getByText(nome)
         .locator('..')
@@ -138,7 +142,7 @@ test('falha ao editar categoria removendo o nome', async ({ page }) => {
         page.getByText(/nome.*obrigatório/i)
     ).toBeVisible();
 
-    await page.goto('https://lumina.local/painel/categorias');
+    await page.goto('https://lumina.local/painel/editoras');
 
     await page.getByText(nome)
         .locator('..')
@@ -150,4 +154,7 @@ test('falha ao editar categoria removendo o nome', async ({ page }) => {
     await expect(
         page.getByText(/removida com sucesso/i)
     ).toBeVisible();
+
+    await page.getByRole('button', { name: 'OK' }).click();
 });
+

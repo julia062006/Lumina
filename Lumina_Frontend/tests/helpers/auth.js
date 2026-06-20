@@ -3,10 +3,10 @@ export async function fazerLogin(page) {
     await page.goto('https://lumina.local/entrar');
 
     await page.getByPlaceholder('Digite seu email')
-        .fill('gilberto@gmail.com');
+        .fill('mariana@gmail.com');
 
     await page.getByPlaceholder('Digite sua senha')
-        .fill('Gilberto123!');
+        .fill('Mariana123!');
 
     await page.locator('button[type="submit"]').click();
 
