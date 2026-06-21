@@ -1,10 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import { BotaoPrimario } from "./Botao";
 import { BotaoSecundario } from "./Botao";
 import { UseModalFecharEsc } from "../hooks/UseModalFecharEsc";
-const API = "http://localhost:3000";
+const API = "/api";
 
 export default function LivroModal({ livro, onFechar }) {
   UseModalFecharEsc(onFechar);
+  const navigate = useNavigate();
 
   const abrirPdf = () =>
     window.open(`${API}/uploads/${livro.urlPdf}`, "_blank");
@@ -25,7 +27,18 @@ export default function LivroModal({ livro, onFechar }) {
         />
         <div className="flex flex-col">
           <h2 className="text-lg font-medium">{livro.title}</h2>
-          <p className="text-sm text-gray-500 mb-3">{livro.author}</p>
+          <p className="text-sm text-gray-500 mb-1">{livro.author}</p>
+          {livro.editora && (
+            <p className="text-xs text-gray-400 mb-1">{livro.editora}</p>
+          )}
+          {livro.colecao && (
+            <button
+              onClick={() => navigate(`/biblioteca?colecao=${livro.id_colecao}`)}
+              className="inline-block text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full mb-3 w-fit hover:bg-purple-200 transition-colors cursor-pointer"
+            >
+              {livro.colecao}
+            </button>
+          )}
           <p className="text-sm text-gray-600 leading-relaxed flex-1 overflow-y-auto max-h-40">
             {livro.description}
           </p>
