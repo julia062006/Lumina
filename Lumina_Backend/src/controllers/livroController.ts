@@ -160,7 +160,9 @@ class LivroController {
                 where: { destaque: true },
                 include: [
                     { association: "autor" },
-                    { association: "categoria" }
+                    { association: "categoria" },
+                    { association: "editora" },
+                    { association: "colecao" }
                 ]
             });
 

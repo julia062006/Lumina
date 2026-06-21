@@ -12,6 +12,8 @@ function mapearLivroParaCard(livro) {
     return {
         title: livro.titulo,
         author: livro.autor?.nome,
+        editora: livro.editora?.nome,
+        colecao: livro.colecao?.nome,
         image: `/api/uploads/${livro.capa_imagem}`,
         description: livro.descricao ?? "",
         urlPdf: livro.arquivo_pdf ?? "",
