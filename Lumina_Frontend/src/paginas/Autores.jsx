@@ -9,7 +9,7 @@ function Autores() {
   const [autorLivros, setAutorLivros] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/autores")
+    fetch("/api/autores")
       .then((res) => res.json())
       .then((data) => setAutores(data))
       .catch((err) => console.error("Erro ao buscar autores:", err));
