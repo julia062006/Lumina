@@ -37,9 +37,15 @@ export default function LivroCartao({ livro }) {
             <p className="text-xs text-gray-400 mb-1">{livro.editora}</p>
           )}
           {livro.colecao && (
-            <span className="inline-block text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full mb-2 w-fit">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/biblioteca?colecao=${livro.id_colecao}`);
+              }}
+              className="inline-block text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full mb-2 w-fit hover:bg-purple-200 transition-colors cursor-pointer"
+            >
               {livro.colecao}
-            </span>
+            </button>
           )}
 
           <div className="flex gap-2 mt-auto pt-2">
