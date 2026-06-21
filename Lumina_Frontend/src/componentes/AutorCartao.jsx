@@ -1,6 +1,6 @@
 import { BotaoPrimario, BotaoSecundario } from "./Botao";
 
-const API = "http://localhost:3000";
+const API = "/api";
 
 export default function AutorCartao({ autor, onVerMais, onVerLivros }) {
   return (

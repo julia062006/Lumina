@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { BotaoSecundario } from "./Botao";
 
-const API = "http://localhost:3000";
+const API = "/api";
 
 export default function AutorModal({ autor, onFechar }) {
   useEffect(() => {
