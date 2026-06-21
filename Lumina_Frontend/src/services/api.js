@@ -64,6 +64,15 @@ export async function atualizarUsuario(id, dados) {
     return tratarResposta(resposta);
 }
 
+export async function excluirUsuario(id) {
+    const resposta = await fetch(API + "/usuarios/" + id, {
+        method: "DELETE",
+        headers: getHeaders()
+    });
+
+    return tratarResposta(resposta);
+}
+
 export async function getPerfil() {
     const resposta = await fetch(API + "/perfil", {
         headers: getHeaders()
