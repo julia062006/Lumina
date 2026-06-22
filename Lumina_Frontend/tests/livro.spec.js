@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { fazerLogin } from './helpers/auth';
 
+test.describe.configure({ mode: 'serial' });
 
 test('CRUD completo de livro', async ({ page }) => {
 
@@ -135,6 +136,9 @@ test('CRUD completo de livro', async ({ page }) => {
         name: 'OK'
     }).click();
 
+    await page.goto(
+        'https://lumina.local/painel/livros'
+    );
 
 
     await expect(
@@ -164,6 +168,9 @@ test('CRUD completo de livro', async ({ page }) => {
         name: 'OK'
     }).click();
 
+    await page.goto(
+        'https://lumina.local/painel/livros'
+    );
 
     await expect(
         page.getByText(`${titulo} Editado`)
