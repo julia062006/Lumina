@@ -180,6 +180,7 @@ function CadastrarLivro() {
                     <label>Capa do Livro</label>
                     <input
                         type="file"
+                        name="capa_imagem"
                         accept="image/*"
                         onChange={(e) => setCapa(e.target.files[0])}
                         className="block mt-2"
@@ -199,6 +200,7 @@ function CadastrarLivro() {
                     <label>Arquivo PDF</label>
                     <input
                         type="file"
+                        name="arquivo_pdf"
                         accept="application/pdf"
                         onChange={(e) => setPdf(e.target.files[0])}
                         className="block mt-2"
