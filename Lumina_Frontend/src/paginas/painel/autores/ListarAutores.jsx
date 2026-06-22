@@ -47,7 +47,7 @@ function ListarAutores() {
                         <>
                             <td className="px-4 py-2">
                                 <img
-                                    src={`http://localhost:3000/uploads/${autor.foto}`}
+                                    src={`/api/uploads/${autor.foto}`}
                                     alt={autor.nome}
                                     className="w-16 h-20 object-cover rounded"
                                 />
