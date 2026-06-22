@@ -74,7 +74,7 @@ function EditarAutor() {
 
                     {(foto || autor.foto) && (
                         <img
-                            src={foto ? URL.createObjectURL(foto) : `http://localhost:3000/uploads/${autor.foto}`}
+                            src={foto ? URL.createObjectURL(foto) : `/api/uploads/${autor.foto}`}
                             alt="preview"
                             width="150"
                             className="mt-2 mb-2 block"

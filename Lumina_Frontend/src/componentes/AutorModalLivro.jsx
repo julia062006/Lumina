@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import LivroCartao from "./LivroCartao";
 import { getLivrosPorAutor } from "../services/api";
 
-const API = "http://localhost:3000";
+const API = "/api";
 
 function mapearLivroParaCartao(livro) {
     return {
