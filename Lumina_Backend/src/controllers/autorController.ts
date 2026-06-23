@@ -6,7 +6,9 @@ import Livro from "../models/Livro";
 class AutorController {
     static async findAll(req: Request, res: Response) {
         try {
-            const autor = await Autor.findAll();
+            const autor = await Autor.findAll({
+                order: [["id_autor", "DESC"]]
+            });
             return res.send(autor);
 
         } catch (erro) {

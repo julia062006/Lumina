@@ -79,6 +79,25 @@ function CadastroUsuario() {
                 />
 
                 <Input
+                    label="CPF"
+                    name="cpf"
+                    placeholder="Digite seu CPF"
+                    register={(name) =>
+                        register(name, {
+                            required: "O CPF é obrigatório",
+                            validate: (value) => {
+                                const cpfLimpo = value.replace(/\D/g, "");
+                                return cpf.isValid(cpfLimpo) || "CPF inválido";
+                            }
+                        })
+                    }
+                    onChange={(e) => {
+                        e.target.value = mascaraCPF(e.target.value);
+                    }}
+                    error={errors.cpf}
+                />
+
+                <Input
                     label="Email"
                     name="email"
                     placeholder="Digite seu email"
@@ -131,25 +150,6 @@ function CadastroUsuario() {
                     error={errors.confirmarSenha}
                 />
 
-                <Input
-                    label="CPF"
-                    name="cpf"
-                    placeholder="Digite seu CPF"
-                    register={(name) =>
-                        register(name, {
-                            required: "O CPF é obrigatório",
-                            validate: (value) => {
-                                const cpfLimpo = value.replace(/\D/g, "");
-                                return cpf.isValid(cpfLimpo) || "CPF inválido";
-                            }
-                        })
-                    }
-                    onChange={(e) => {
-                        e.target.value = mascaraCPF(e.target.value);
-                    }}
-                    error={errors.cpf}
-                />
-                
                 <div className="flex gap-4 mt-4 items-center">
                     <BotaoPrimario type="submit">
                         Cadastrar

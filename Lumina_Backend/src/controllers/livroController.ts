@@ -23,6 +23,7 @@ class LivroController {
 
             const livro = await Livro.findAll({
                 where,
+                order: [["id_livro", "DESC"]],
                 include: [
                     { association: "autor" },
                     { association: "categoria" },

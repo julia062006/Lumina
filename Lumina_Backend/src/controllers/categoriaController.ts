@@ -5,7 +5,9 @@ import { validationResult } from "express-validator";
 class CategoriaController {
   static async findAll(req: Request, res: Response) {
     try {
-      const categoria = await Categoria.findAll();
+      const categoria = await Categoria.findAll({
+        order: [["id_categoria", "DESC"]]
+      });
       return res.send(categoria);
     } catch (erro) {
       return res.status(500).json({ mensagem: "Erro interno do servidor" });

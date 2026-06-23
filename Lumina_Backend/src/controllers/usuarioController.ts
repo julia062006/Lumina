@@ -9,7 +9,9 @@ import { cpf as cpfValidator } from "cpf-cnpj-validator";
 class UsuarioController {
     static async findAll(req: Request, res: Response) {
         try {
-            const usuario = await Usuario.findAll();
+            const usuario = await Usuario.findAll({
+                order: [["id_usuario", "DESC"]]
+            });
             return res.send(usuario);
 
         } catch (erro) {

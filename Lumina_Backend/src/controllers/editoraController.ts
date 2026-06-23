@@ -4,7 +4,9 @@ import Editora from "../models/Editora";
 class EditoraController {
     static async findAll(req: Request, res: Response) {
         try {
-            const editoras = await Editora.findAll();
+            const editoras = await Editora.findAll({
+                order: [["id_editora", "DESC"]]
+            });
 
             return res.status(200).json(editoras);
 
