@@ -69,10 +69,11 @@ function EditarPerfil() {
 
     return (
         <div style={{
-        backgroundImage: `url(${fundo})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",}}className="min-h-screen">
+            backgroundImage: `url(${fundo})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+        }} className="min-h-screen">
             <div>
                 <Formulario titulo="Editar Perfil" onSubmit={handleSubmit(salvar)}>
 
@@ -81,6 +82,13 @@ function EditarPerfil() {
                         name="nome"
                         register={(name) => register(name, validacoesNome)}
                         error={errors.nome}
+                    />
+
+                    <Input
+                        label="CPF"
+                        name="cpf"
+                        register={(name) => register(name, validacoesCPF)}
+                        error={errors.cpf}
                     />
 
                     <Input
@@ -109,13 +117,6 @@ function EditarPerfil() {
                         placeholder="Confirme a nova senha"
                         register={(name) => register(name, validacoesConfirmarSenha(getSenha))}
                         error={errors.confirmarSenha}
-                    />
-
-                    <Input
-                        label="CPF"
-                        name="cpf"
-                        register={(name) => register(name, validacoesCPF)}
-                        error={errors.cpf}
                     />
 
                     <div className="flex gap-4 mt-4 items-center">

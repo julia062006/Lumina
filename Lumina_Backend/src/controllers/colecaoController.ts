@@ -5,7 +5,9 @@ class ColecaoController {
 
     static async findAll(req: Request, res: Response) {
         try {
-            const colecoes = await Colecao.findAll();
+            const colecoes = await Colecao.findAll({
+                order: [["id_colecao", "DESC"]]
+            });
 
             return res.status(200).json(colecoes);
 
