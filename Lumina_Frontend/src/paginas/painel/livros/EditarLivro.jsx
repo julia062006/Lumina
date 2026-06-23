@@ -182,7 +182,7 @@ function EditarLivro() {
                         <img
                             src={capaImagem
                                 ? URL.createObjectURL(capaImagem)
-                                : `http://localhost:3000/uploads/${livro.capa_imagem}`}
+                                : `/api/uploads/${livro.capa_imagem}`}
                             alt="preview capa"
                             width="150"
                             className="mt-2 mb-2 block"
