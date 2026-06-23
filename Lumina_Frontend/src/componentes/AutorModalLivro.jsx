@@ -9,7 +9,7 @@ function mapearLivroParaCartao(livro) {
     return {
         title: livro.titulo,
         author: livro.autor?.nome,
-        image: `${API}/uploads/${livro.capa_imagem}`,
+        image: `/api/uploads/${livro.capa_imagem}`,
         description: livro.descricao ?? "",
         urlPdf: livro.arquivo_pdf ?? "",
     };
