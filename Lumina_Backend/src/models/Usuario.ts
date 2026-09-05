@@ -7,6 +7,8 @@ class Usuario extends Model {
     declare email: string;
     declare senha: string;
     declare cpf: string;
+    declare role: "user" | "admin";
+    declare foto_perfil: string | null;
 }
 
 Usuario.init({
@@ -32,6 +34,15 @@ Usuario.init({
         type: DataTypes.STRING,
         allowNull: false,
         unique: 'unique_cpf'
+    },
+    role: {
+        type: DataTypes.ENUM("user", "admin"),
+        allowNull: false,
+        defaultValue: "user"
+    },
+    foto_perfil: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
 }, {
     sequelize,

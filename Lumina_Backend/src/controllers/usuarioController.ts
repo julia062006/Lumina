@@ -48,17 +48,21 @@ class UsuarioController {
 
             const senhaHash = await bcrypt.hash(senha, 10);
 
+            const foto_perfil = req.file ? req.file.filename : null;
+
             const usuario = await Usuario.create({
                 nome,
                 email,
                 senha: senhaHash,
-                cpf: cpfLimpo
+                cpf: cpfLimpo,
+                foto_perfil
             })
             return res.status(201).json({
                 id: usuario.id_usuario,
                 nome: usuario.nome,
                 email: usuario.email,
-                cpf: usuario.cpf
+                cpf: usuario.cpf,
+                foto_perfil: usuario.foto_perfil
             });
 
         } catch (erro) {
@@ -85,7 +89,9 @@ class UsuarioController {
                 return res.status(404).json({ mensagem: "Usuário não encontrado" });
             }
 
-            if (!cpf && !nome && !senha) {
+            const foto_perfil = req.file ? req.file.filename : usuario.foto_perfil;
+
+            if (!cpf && !nome && !senha && !req.file) {
                 return res.status(400).json({
                     mensagem: "Nenhum dado foi enviado para atualização"
                 });
@@ -104,7 +110,8 @@ class UsuarioController {
             await usuario.update({
                 nome,
                 senha: senhaHash,
-                cpf: cpfLimpo
+                cpf: cpfLimpo,
+                foto_perfil
             });
             return res.status(200).json({ mensagem: "Usuário atualizado com sucesso" });
 
@@ -164,9 +171,10 @@ class UsuarioController {
             const token = jwt.sign(
                 {
                     id: usuario.id_usuario,
-                    email: usuario.email
+                    email: usuario.email,
+                    role: usuario.role
                 },
-                process.env.SECRET as string, { expiresIn: "1d" }
+                process.env.SECRET as string,
             );
 
             return res.status(200).json({
@@ -176,7 +184,9 @@ class UsuarioController {
                     id: usuario.id_usuario,
                     nome: usuario.nome,
                     email: usuario.email,
-                    cpf: usuario.cpf
+                    cpf: usuario.cpf,
+                    role: usuario.role,
+                    foto_perfil: usuario.foto_perfil
                 }
             });
 
@@ -197,10 +207,12 @@ class UsuarioController {
             }
 
             return res.json({
-                id: usuario.id_usuario,
+                id_usuario: usuario.id_usuario,
                 nome: usuario.nome,
                 email: usuario.email,
-                cpf: usuario.cpf
+                cpf: usuario.cpf,
+                role: usuario.role,
+                foto_perfil: usuario.foto_perfil
             });
 
         } catch (erro) {
