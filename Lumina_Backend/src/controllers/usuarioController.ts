@@ -113,7 +113,15 @@ class UsuarioController {
                 cpf: cpfLimpo,
                 foto_perfil
             });
-            return res.status(200).json({ mensagem: "Usuário atualizado com sucesso" });
+            return res.status(200).json({
+                mensagem: "Usuário atualizado com sucesso", 
+                id_usuario: usuario.id_usuario,
+                nome: usuario.nome,
+                email: usuario.email,
+                cpf: usuario.cpf,
+                role: usuario.role,
+                foto_perfil: usuario.foto_perfil
+            });
 
         } catch (erro) {
             console.error("Erro no update:", erro);
