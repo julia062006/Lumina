@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
+import Role from "./Role";
 
 class Usuario extends Model {
     declare id_usuario: number;
@@ -7,7 +8,8 @@ class Usuario extends Model {
     declare email: string;
     declare senha: string;
     declare cpf: string;
-    declare role: "user" | "admin";
+    declare id_role: number;
+    declare role?: Role;
     declare foto_perfil: string | null;
 }
 
@@ -35,10 +37,13 @@ Usuario.init({
         allowNull: false,
         unique: 'unique_cpf'
     },
-    role: {
-        type: DataTypes.ENUM("user", "admin"),
+    id_role: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: "user"
+        references: {
+            model: "role",
+            key: "id_role"
+        }
     },
     foto_perfil: {
         type: DataTypes.STRING,
@@ -48,5 +53,9 @@ Usuario.init({
     sequelize,
     tableName: "usuario"
 })
+
+Usuario.belongsTo(Role, { foreignKey: "id_role", as: "role" });
+
+Role.hasMany(Usuario, { foreignKey: "id_role", as: "usuarios" });
 
 export default Usuario;
