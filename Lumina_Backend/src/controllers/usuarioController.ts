@@ -178,7 +178,7 @@ class UsuarioController {
         }
     }
 
-    static async remove(req: Request, res: Response) {
+    static async remove(req: AuthRequest, res: Response) {
         try {
             const { id } = req.params;
 
@@ -186,6 +186,13 @@ class UsuarioController {
 
             if (!usuario) {
                 return res.status(404).json({ mensagem: "Usuário não encontrado" });
+            }
+
+            const DonoDaConta = Number(id) === req.usuario!.id;
+            const Admin = req.usuario!.role === "admin";
+
+            if (!DonoDaConta && !Admin) {
+                return res.status(403).json({ mensagem: "Acesso negado" });
             }
 
             await usuario.destroy();

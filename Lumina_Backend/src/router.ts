@@ -19,8 +19,8 @@ router.post("/entrar", UsuarioController.login);
 router.use(AutenticarToken);
 
 router.get("/usuarios", AutorizarRoles("admin"), UsuarioController.findAll);
-router.get("/usuarios/:id", UsuarioController.getById);
-router.delete("/usuarios/:id", AutorizarRoles("admin"), UsuarioController.remove);
+router.get("/usuarios/:id", AutorizarRoles("admin"), UsuarioController.getById);
+router.delete("/usuarios/:id", UsuarioController.remove);
 router.put("/usuarios/:id", upload.single("foto_perfil"), validarAtualizacaoUsuario, UsuarioController.update);
 router.get("/perfil", UsuarioController.perfil);
 
