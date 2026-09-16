@@ -101,7 +101,7 @@ class UsuarioController {
             });
 
         } catch (erro) {
-            return res.status(500).json({ mensagem: "Erro interno do servidor", erro });
+            return res.status(500).json({ mensagem: "Não foi possível realizar o cadastro, verifique os campos preenchidos.", erro });
         }
     }
 
